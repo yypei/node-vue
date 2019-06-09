@@ -3,7 +3,9 @@ var router = express.Router();
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.send('首页');
+    res.type('html');
+    res.render('index', { title: 'Express' });
+  // res.send('../dist/index.html');
 });
 
 

@@ -3,10 +3,9 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var ejs = require('ejs');
 
 var routerConfig=require('./routes/routerConfig');
-// var indexRouter = require('./controller/index');
-// var usersRouter = require('./controller/users');
 
 var app = express();
 
@@ -17,12 +16,14 @@ app.all('*', function (req, res, next) {
     // res.header('Access-Control-Allow-Headers', 'Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Authorization , Access-Control-Request-Headers');
     res.header('Access-Control-Allow-Methods', '*');
     res.header('Content-Type', 'application/json;charset=utf-8');
+    res.header('Content-Type', 'text/css;charset=utf-8');
     next();
 });
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
+app.engine('html', ejs.__express);
+app.set('view engine', 'html');
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -30,8 +31,6 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-// app.use('/', indexRouter);
-// app.use('/users', usersRouter);
 for(var key in routerConfig){
     app.use(routerConfig[key].path,routerConfig[key].router);
 }
